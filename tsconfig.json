@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+      "allowJs": true,
+      "target": "ES2019",
+      "module": "es6",
+      "strict": true,
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "sourceMap": true,
+      "outDir": "./dist"
+  },
+  "include": [
+      "./src/**/*",
+  ],
+  "exclude": [
+      "node_modules"
+  ],
+  "plugins": [
+    { "name": "typescript-tslint-plugin" }
+  ]
+}
