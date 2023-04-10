@@ -21,9 +21,9 @@ app.use('/', router);
 // app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
 https.createServer({
-  key: fs.readFileSync('2334cd2e0ad1388a.pem'),
-  cert: fs.readFileSync('2334cd2e0ad1388a.crt'),
-  ca: fs.readFileSync('gd_bundle-g2-g1.crt')
+  key: fs.readFileSync('../ssl/2334cd2e0ad1388a.pem'),
+  cert: fs.readFileSync('../ssl/2334cd2e0ad1388a.crt'),
+  ca: fs.readFileSync('../ssl/gd_bundle-g2-g1.crt')
 }, app).listen(app.locals.port, function() {
  console.log("Started on PORT " + app.locals.port);
 });
