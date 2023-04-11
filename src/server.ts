@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import * as pushController from './controller/push.js';
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 5000;
 const app = express();
 
 app.use(express.static(path.join(process.cwd(), 'client')));
