@@ -50,3 +50,10 @@ export interface Schedule {
   startDate: Date;
   endDate: Date;
 };
+
+export interface Subscription {
+  id: number;
+  endpoint: string;
+  expirationTime: Date;
+  keys: string;
+};
