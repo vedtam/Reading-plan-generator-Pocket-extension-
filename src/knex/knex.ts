@@ -5,9 +5,9 @@ export const config = {
     client: 'pg',
     connection: {
       host: 'localhost',
-      user: 'postgres',
-      password: 'password',
-      database: 'project_x',
+      user: 'admin',
+      password: '3Ujuj#tu*OS4esp$s*h=',
+      database: 'bookminder',
     },
   },
 } as { [prop: string]: any };
