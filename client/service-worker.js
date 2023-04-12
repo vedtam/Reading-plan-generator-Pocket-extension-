@@ -1,18 +1,21 @@
 self.addEventListener('push', event => {
   const data = event.data.json();
 
+  console.log({data});
+
   const options = {
     body: data.body,
     icon: 'badge.png',
     image: data.img,
     badge: 'badge.png',
+    data,
     actions: [
-      // {
-      //   action: 'coffee-action',
-      //   type: 'button',
-      //   title: 'Coffee',
-      //   icon: 'photo.png',
-      // },
+      {
+        action: 'pocket-action',
+        type: 'button',
+        title: 'Show in Pocket',
+        // icon: 'photo.png',
+      },
       // {
       //   action: 'reply',
       //   type: 'text',
@@ -25,7 +28,14 @@ self.addEventListener('push', event => {
   event.waitUntil(self.registration.showNotification(data.title, options));
 });
 
-self.addEventListener('notificationclick', event => {
+self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  event.waitUntil(clients.openWindow('https://example.com'));
+
+  console.log({event});
+
+  if (event.action === 'pocket-action') {
+    event.waitUntil(clients.openWindow('https://getpocket.com/read/' + event.notification.data.item_id));
+  } else {
+    event.waitUntil(clients.openWindow(event.notification.data.url));
+  }
 });

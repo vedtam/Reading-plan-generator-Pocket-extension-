@@ -88,6 +88,8 @@ export async function getBookmarks(latest?: Bookmark) {
   })
   .then((data: PocketResponse) => {
     if (data.error) {
+      console.log({ data });
+      
       throw new Error(data.error);
     }
     return Object.values(data.list);

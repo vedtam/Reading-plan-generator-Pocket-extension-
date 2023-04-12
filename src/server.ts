@@ -64,12 +64,14 @@ for (const slot of slots) {
 
 async function notify(bookmark?: Bookmark) {
 	if (bookmark) {
-		const { resolved_title, excerpt, top_image_url } = bookmark;
+		const { resolved_title, excerpt, top_image_url, resolved_url, item_id } = bookmark;
 
 		const payload = JSON.stringify({
 			title: resolved_title,
 			body: excerpt,
-      img: top_image_url
+      img: top_image_url,
+      url: resolved_url,
+      item_id
 		});
 
 		const subscription = await knex<Subscription>('subscription').select().first() as any;

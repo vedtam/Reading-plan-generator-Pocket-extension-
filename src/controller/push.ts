@@ -12,6 +12,8 @@ export async function subscribe(req: Request, res: Response, next: NextFunction)
   try {
     const subscription = req.body;
     const { endpoint, expirationTime, keys } = subscription;
+
+    console.log({subscription});
     
     await knex<Subscription>('subscription').insert({
       endpoint,
