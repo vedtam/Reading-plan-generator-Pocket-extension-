@@ -39,7 +39,6 @@ import webPush from 'web-push';
 
 const slots = [
 	{hour: 6, minute: 45},
-	{hour: 7, minute: 21},
 	{hour: 22, minute: 30}
 ];
 
@@ -51,8 +50,6 @@ new cron.CronJob('*/30 * * * *', async () => {
 for (const slot of slots) {
   const slotDate = new Date();
   slotDate.setHours(slot.hour, slot.minute, 0, 0);
-
-  console.log(`Setting up cron job for ${slotDate.getHours()}:${slotDate.getMinutes()}`);
   
 	new cron.CronJob(`${slot.minute} ${slot.hour} * * *`, async () => {
     const schedule = await knex<Schedule>('schedule').where('startDate', '=', slotDate).first();
@@ -67,11 +64,12 @@ for (const slot of slots) {
 
 async function notify(bookmark?: Bookmark) {
 	if (bookmark) {
-		const { resolved_title, excerpt } = bookmark;
+		const { resolved_title, excerpt, top_image_url } = bookmark;
 
 		const payload = JSON.stringify({
 			title: resolved_title,
-			body: excerpt
+			body: excerpt,
+      img: top_image_url
 		});
 
 		const subscription = await knex<Subscription>('subscription').select().first() as any;
@@ -90,7 +88,7 @@ async function syncBookmarks() {
 		console.log(`Found ${bookmarks.length} new bookmarks`);
 
 		for (const bookmark of bookmarks) {
-			const { item_id, resolved_title, resolved_url, excerpt, time_to_read, is_article, time_added } = bookmark;
+			const { item_id, resolved_title, resolved_url, excerpt, time_to_read, is_article, time_added, top_image_url } = bookmark;
 			const exist = await knex<Bookmark>('bookmark').where({ item_id }).first();
 
 			if (!exist) {
@@ -98,13 +96,14 @@ async function syncBookmarks() {
 					item_id,
 					resolved_title,
 					resolved_url,
+          top_image_url,
 					excerpt,
 					is_article,
 					time_to_read: time_to_read || 0, //FIXME: time_to_read is null for some bookmarks!
 					time_added: new Date(Number(time_added) * 1000)
 				}) as Bookmark[];
 
-				// await updateReadingPlan(inserted, slots);
+				await updateReadingPlan(inserted, slots);
 			}
 		}
 	} else {

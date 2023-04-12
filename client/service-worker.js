@@ -1,25 +1,24 @@
 self.addEventListener('push', event => {
   const data = event.data.json();
-  console.log({data});
 
   const options = {
     body: data.body,
-    icon: 'photo.png',
-    image: 'photo.png',
-    badge: 'badge.jpeg',
+    icon: 'badge.png',
+    image: data.img,
+    badge: 'badge.png',
     actions: [
-      {
-        action: 'coffee-action',
-        type: 'button',
-        title: 'Coffee',
-        icon: 'photo.png',
-      },
-      {
-        action: 'reply',
-        type: 'text',
-        title: 'Reply',
-        icon: 'photo.png',
-      }
+      // {
+      //   action: 'coffee-action',
+      //   type: 'button',
+      //   title: 'Coffee',
+      //   icon: 'photo.png',
+      // },
+      // {
+      //   action: 'reply',
+      //   type: 'text',
+      //   title: 'Reply',
+      //   icon: 'photo.png',
+      // }
     ]
   };
 

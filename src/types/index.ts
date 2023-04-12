@@ -41,6 +41,7 @@ export interface Bookmark {
   time_to_read: number;
   is_article: string;
   time_added: Date;
+  top_image_url: string;
   created_at: Date;
 };
 
