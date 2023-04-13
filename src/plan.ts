@@ -1,7 +1,7 @@
-import { Bookmark, PocketResponse, Schedule } from "./types";
+import { Bookmark, Schedule, Slot } from "./types";
 import knex from './knex/knex.js';
 
-export async function updateReadingPlan(bookmark: Bookmark, slots: { hour: number, minute: number }[]) {
+export async function updateReadingPlan(bookmark: Bookmark, slots: Slot[]) {
   const { id: bookmarkId, time_to_read } = bookmark;
   const lastItem = await knex<Schedule>('schedule').orderBy('endDate', 'desc').first();
 
@@ -17,17 +17,18 @@ export async function updateReadingPlan(bookmark: Bookmark, slots: { hour: numbe
 
       // Pick the next slot
       for (const slot of slots) {
-        if (future.hour < slot.hour) {
-          date.setHours(slot.hour, slot.minute, 0, 0);
+        if (future.hour < Number(slot.hour)) {
+          date.setHours(Number(slot.hour), Number(slot.minute), 0, 0);
           startDate = date;
           endDate = new Date(date.getTime() + (time_to_read * 60 * 1000));
+          break;
         }
       }
 
       // If there's no more slot today, pick the first slot of the next day
       if (!startDate) {
         date.setDate(date.getDate() + 1);
-        date.setHours(slots[0].hour, slots[0].minute, 0, 0);
+        date.setHours(Number(slots[0].hour), Number(slots[0].minute), 0, 0);
         startDate = date;
         endDate = new Date(date.getTime() + (time_to_read * 60 * 1000));
       }
@@ -42,7 +43,8 @@ export async function updateReadingPlan(bookmark: Bookmark, slots: { hour: numbe
 
     } else {
       const date = new Date();
-      const now = {
+
+      const current = {
         hour: date.getHours(),
         minute: date.getMinutes()
       };
@@ -52,17 +54,21 @@ export async function updateReadingPlan(bookmark: Bookmark, slots: { hour: numbe
       
       // Pick the next slot
       for (const slot of slots) {
-        if (now.hour < slot.hour) {
-          date.setHours(slot.hour, slot.minute, 0, 0);
+
+        console.log(current.hour, '<' , Number(slot.hour));
+        
+        if (current.hour < Number(slot.hour)) {
+          date.setHours(Number(slot.hour), Number(slot.minute), 0, 0);
           startDate = date;
           endDate = new Date(date.getTime() + (time_to_read * 60 * 1000));
+          break;
         }
       }
 
       // If there's no more slot today, pick the first slot of the next day
       if (!startDate) {
         date.setDate(date.getDate() + 1);
-        date.setHours(slots[0].hour, slots[0].minute, 0, 0);
+        date.setHours(Number(slots[0].hour), Number(slots[0].minute), 0, 0);
         startDate = date;
         endDate = new Date(date.getTime() + (time_to_read * 60 * 1000));
       }

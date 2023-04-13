@@ -75,9 +75,8 @@ export async function getBookmarks(latest?: Bookmark) {
       detailType: 'complete',
       sort: 'newest',
       tag: 'readinglist',
-      count: 5,
-      // since,
-      // search: 'Autophagy',
+      since,
+      count: 15
     }),
   })
   .then((response) => {

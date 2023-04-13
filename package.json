@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "@mozilla/readability": "^0.4.2",
+    "@sentry/node": "^7.47.0",
     "body-parser": "^1.20.2",
     "cron": "^2.3.0",
     "epub": "^1.2.1",

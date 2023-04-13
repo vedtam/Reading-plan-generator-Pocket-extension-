@@ -58,3 +58,9 @@ export interface Subscription {
   expirationTime: Date;
   keys: string;
 };
+
+export interface Slot {
+  id: number;
+  hour: string;
+  minute: string;
+};

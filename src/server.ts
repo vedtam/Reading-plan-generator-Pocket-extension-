@@ -2,6 +2,12 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
 import * as pushController from './controller/push.js';
+import * as Sentry from '@sentry/node';
+
+Sentry.init({
+  dsn: "https://c43157a0a1cc4c2580df2b040eed9899@o219383.ingest.sentry.io/4505005297696768",
+  tracesSampleRate: 1.0,
+});
 
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -30,7 +36,8 @@ app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
 ///////
 
-import { Schedule, Bookmark, Subscription } from "./types";
+
+import { Schedule, Bookmark, Subscription, Slot } from "./types";
 import { updateReadingPlan } from './plan.js';
 import { getBookmarks } from './service/pocket.js';
 import knex from './knex/knex.js';
@@ -38,29 +45,46 @@ import * as cron from 'cron';
 import webPush from 'web-push';
 
 const slots = [
-	{hour: 6, minute: 45},
-	{hour: 22, minute: 30}
-];
+  { hour: '07', minute: '0' },
+  { hour: '08', minute: '0' },
+  { hour: '09', minute: '0' },
+  { hour: '10', minute: '0' },
+  { hour: '11', minute: '0' },
+  { hour: '12', minute: '0' },
+  { hour: '13', minute: '0' },
+  { hour: '14', minute: '0' },
+  { hour: '15', minute: '0' },
+  { hour: '16', minute: '0' },
+  { hour: '17', minute: '0' },
+  { hour: '18', minute: '0' },
+  { hour: '19', minute: '0' },
+  { hour: '20', minute: '0' },
+  { hour: '21', minute: '0' }
+] as any;
 
-new cron.CronJob('*/30 * * * *', async () => {
-	console.log('Syncing bookmarks...');
-	syncBookmarks();
-}, null, true);
+(async function() {
+  new cron.CronJob('*/1 * * * *', async () => {
+    console.log('Syncing bookmarks...');
+    syncBookmarks();
+  }, null, true);
 
-for (const slot of slots) {
-  const slotDate = new Date();
-  slotDate.setHours(slot.hour, slot.minute, 0, 0);
+  // const slots = await knex<Slot>('slot').orderBy('hour', 'asc');
+
+  for (const slot of slots) {
+    const slotDate = new Date();
+    slotDate.setHours(Number(slot.hour), Number(slot.minute), 0, 0);
+    
+    new cron.CronJob(`${slot.minute} ${slot.hour} * * *`, async () => {
+      const schedule = await knex<Schedule>('schedule').where('startDate', '=', slotDate).first();
   
-	new cron.CronJob(`${slot.minute} ${slot.hour} * * *`, async () => {
-    const schedule = await knex<Schedule>('schedule').where('startDate', '=', slotDate).first();
-
-    if (schedule) {
-      const bookmark = await knex<Bookmark>('bookmark').where({id: schedule.bookmarkId}).first();
-      console.log(`Sending notifyication with title: ${bookmark?.resolved_title}, schedule: ${JSON.stringify(schedule)}`);
-      await notify(bookmark);
-    }
-	}, null, true);
-}
+      if (schedule) {
+        const bookmark = await knex<Bookmark>('bookmark').where({id: schedule.bookmarkId}).first();
+        console.log(`Sending notifyication with title: ${bookmark?.resolved_title}, schedule: ${JSON.stringify(schedule)}`);
+        await notify(bookmark);
+      }
+    }, null, true);
+  }
+})();
 
 async function notify(bookmark?: Bookmark) {
 	if (bookmark) {
@@ -105,6 +129,7 @@ async function syncBookmarks() {
 					time_added: new Date(Number(time_added) * 1000)
 				}) as Bookmark[];
 
+        // const slots = await knex<Slot>('slot').orderBy('hour', 'asc');
 				await updateReadingPlan(inserted, slots);
 			}
 		}
