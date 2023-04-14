@@ -45,7 +45,7 @@ import * as cron from 'cron';
 import webPush from 'web-push';
 
 (async function() {
-  new cron.CronJob('*/1 * * * *', async () => {
+  new cron.CronJob('*/30 * * * *', async () => {
     console.log('Syncing bookmarks...');
     syncBookmarks();
   }, null, true);
