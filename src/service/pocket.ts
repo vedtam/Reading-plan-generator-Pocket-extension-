@@ -76,7 +76,7 @@ export async function getBookmarks(latest?: Bookmark) {
       sort: 'newest',
       tag: 'readinglist',
       since,
-      count: 15
+      // count: 15
     }),
   })
   .then((response) => {

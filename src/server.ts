@@ -44,31 +44,13 @@ import knex from './knex/knex.js';
 import * as cron from 'cron';
 import webPush from 'web-push';
 
-const slots = [
-  { hour: '07', minute: '0' },
-  { hour: '08', minute: '0' },
-  { hour: '09', minute: '0' },
-  { hour: '10', minute: '0' },
-  { hour: '11', minute: '0' },
-  { hour: '12', minute: '0' },
-  { hour: '13', minute: '0' },
-  { hour: '14', minute: '0' },
-  { hour: '15', minute: '0' },
-  { hour: '16', minute: '0' },
-  { hour: '17', minute: '0' },
-  { hour: '18', minute: '0' },
-  { hour: '19', minute: '0' },
-  { hour: '20', minute: '0' },
-  { hour: '21', minute: '0' }
-] as any;
-
 (async function() {
   new cron.CronJob('*/1 * * * *', async () => {
     console.log('Syncing bookmarks...');
     syncBookmarks();
   }, null, true);
 
-  // const slots = await knex<Slot>('slot').orderBy('hour', 'asc');
+  const slots = await knex<Slot>('slot').orderBy('hour', 'asc');
 
   for (const slot of slots) {
     const slotDate = new Date();
@@ -129,7 +111,7 @@ async function syncBookmarks() {
 					time_added: new Date(Number(time_added) * 1000)
 				}) as Bookmark[];
 
-        // const slots = await knex<Slot>('slot').orderBy('hour', 'asc');
+        const slots = await knex<Slot>('slot').orderBy('hour', 'asc');
 				await updateReadingPlan(inserted, slots);
 			}
 		}

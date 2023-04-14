@@ -31,7 +31,7 @@ self.addEventListener('push', event => {
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
 
-  console.log({event});
+  // console.log({event});
 
   if (event.action === 'pocket-action') {
     event.waitUntil(clients.openWindow('https://getpocket.com/read/' + event.notification.data.item_id));
