@@ -3,8 +3,8 @@ import { Subscription } from '../types';
 import webPush from 'web-push';
 import knex from '../knex/knex.js';
 
-const publicVapidKey = 'BO15RG6-GR_TWCkc-ql__dOzu_5eX0ryEROVzmlGQ2z183P0VeLbhFi-jRbz_-ajon-EbaUgfSlP-sITKI1Crjo';
-const privateVapidKey = 'X0X9eYcij_fqF-DDTxrvgA8YONJ03eb0CM5hFBWWf9k';
+const publicVapidKey = 'xxx';
+const privateVapidKey = 'xxx';
 
 webPush.setVapidDetails('mailto:vedtam@yahoo.com', publicVapidKey, privateVapidKey);
 
