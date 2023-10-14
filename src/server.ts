@@ -5,7 +5,7 @@ import * as pushController from './controller/push.js';
 import * as Sentry from '@sentry/node';
 
 Sentry.init({
-  dsn: "https://c43157a0a1cc4c2580df2b040eed9899@o219383.ingest.sentry.io/4505005297696768",
+  dsn: "xxx",
   tracesSampleRate: 1.0,
 });
 
@@ -34,7 +34,7 @@ app.use('/', router);
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
 
-///////
+//TODO: move the following lines into a separate module.
 
 
 import { Schedule, Bookmark, Subscription, Slot } from "./types";
