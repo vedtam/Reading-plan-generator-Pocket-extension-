@@ -1,7 +1,7 @@
 import { Bookmark, PocketResponse } from "../types";
 
-const consumer_key = '106588-f57ba7211117b9488375182';
-const access_token = '42a2857b-61c8-0f23-2530-93d6ce';
+const consumer_key = 'xxx';
+const access_token = 'xxx';
 
 // chrome.action.onClicked.addListener(async (tab) => {
   // const redirect_url = chrome.identity.getRedirectURL();
