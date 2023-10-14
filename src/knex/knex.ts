@@ -6,7 +6,7 @@ export const config = {
     connection: {
       host: 'localhost',
       user: 'admin',
-      password: '3Ujuj#tu*OS4esp$s*h=',
+      password: 'password',
       database: 'bookminder',
     },
   },
