@@ -6,7 +6,7 @@ export async function summarize({title, text}: Article) {
 	const response = await fetch(
 		"https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
 		{
-			headers: { Authorization: "Bearer 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" },
+			headers: { Authorization: "Bearer xxx" },
 			method: "POST",
 			body: JSON.stringify({
         inputs: text,
@@ -30,7 +30,7 @@ export async function classify({title, summary}: Article) {
 	const response = await fetch(
 		"https://api-inference.huggingface.co/models/jonaskoenig/topic_classification_04",
 		{
-			headers: { Authorization: "Bearer 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" },
+			headers: { Authorization: "Bearer xxx" },
 			method: "POST",
 			body: JSON.stringify({
 				inputs: summary,
